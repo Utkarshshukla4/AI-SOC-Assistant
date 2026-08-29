@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, session
 import os
 import json
+import re
 
 from analyzer.log_analyzer import analyze_log_file
+
 from security.firewall_manager import (
     block_ip,
     unblock_ip,
@@ -14,7 +16,7 @@ from database import (
     create_user,
     verify_user,
     update_password,
-    user_exists
+
 )
 
 
@@ -31,6 +33,11 @@ app.jinja_env.globals.update(
 
 app.secret_key = "ai_soc_secret_key"
 
+
+# ==================================================
+# DATABASE
+# ==================================================
+
 init_db()
 
 
@@ -38,7 +45,10 @@ init_db()
 # UPLOAD CONFIGURATION
 # ==================================================
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.path.join(
+    app.root_path,
+    "uploads"
+)
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -215,7 +225,7 @@ def login():
 
             session["username"] = username
 
-            # Start a fresh session
+            # Start a fresh dashboard session
             session["fresh_session"] = True
 
             return redirect(
@@ -238,19 +248,8 @@ def login():
 # CREATE ACCOUNT
 # ==================================================
 
-@app.route(
-    "/register",
-    methods=["GET", "POST"]
-)
+@app.route("/register", methods=["GET", "POST"])
 def register():
-
-    if user_exists():
-
-        return render_template(
-            "login.html",
-            error="An account already exists. Please login."
-        )
-
 
     if request.method == "POST":
 
@@ -269,6 +268,9 @@ def register():
             ""
         )
 
+        # ------------------------------------------
+        # Username validation
+        # ------------------------------------------
 
         if not username:
 
@@ -277,6 +279,34 @@ def register():
                 error="Username is required."
             )
 
+        if len(username) < 3:
+
+            return render_template(
+                "register.html",
+                error="Username must contain at least 3 characters."
+            )
+
+        if len(username) > 30:
+
+            return render_template(
+                "register.html",
+                error="Username must not exceed 30 characters."
+            )
+
+        # Only letters, numbers, underscore and dot
+        if not re.match(
+            r"^[A-Za-z0-9_.]+$",
+            username
+        ):
+
+            return render_template(
+                "register.html",
+                error="Username can contain only letters, numbers, underscore and dot."
+            )
+
+        # ------------------------------------------
+        # Password required
+        # ------------------------------------------
 
         if not password:
 
@@ -285,6 +315,116 @@ def register():
                 error="Password is required."
             )
 
+        # ------------------------------------------
+        # Password length
+        # ------------------------------------------
+
+        if len(password) < 8:
+
+            return render_template(
+                "register.html",
+                error="Password must contain at least 8 characters."
+            )
+
+        if len(password) > 128:
+
+            return render_template(
+                "register.html",
+                error="Password must not exceed 128 characters."
+            )
+
+        # ------------------------------------------
+        # Password complexity
+        # ------------------------------------------
+
+        if not re.search(
+            r"[A-Z]",
+            password
+        ):
+
+            return render_template(
+                "register.html",
+                error="Password must contain at least one uppercase letter."
+            )
+
+        if not re.search(
+            r"[a-z]",
+            password
+        ):
+
+            return render_template(
+                "register.html",
+                error="Password must contain at least one lowercase letter."
+            )
+
+        if not re.search(
+            r"[0-9]",
+            password
+        ):
+
+            return render_template(
+                "register.html",
+                error="Password must contain at least one number."
+            )
+
+        if not re.search(
+            r"[^A-Za-z0-9]",
+            password
+        ):
+
+            return render_template(
+                "register.html",
+                error="Password must contain at least one special character."
+            )
+
+        # ------------------------------------------
+        # Prevent username as password
+        # ------------------------------------------
+
+        if password.lower() == username.lower():
+
+            return render_template(
+                "register.html",
+                error="Password cannot be the same as your username."
+            )
+
+        # ------------------------------------------
+        # Common weak passwords
+        # ------------------------------------------
+
+        weak_passwords = {
+
+            "password",
+            "password123",
+            "admin123",
+            "12345678",
+            "123456789",
+            "1234567890",
+            "qwerty123",
+            "qwertyui",
+            "welcome123",
+            "adminadmin",
+            "letmein123"
+
+        }
+
+        if password.lower() in weak_passwords:
+
+            return render_template(
+                "register.html",
+                error="This password is too common. Please choose a stronger password."
+            )
+
+        # ------------------------------------------
+        # Confirm password
+        # ------------------------------------------
+
+        if not confirm_password:
+
+            return render_template(
+                "register.html",
+                error="Please confirm your password."
+            )
 
         if password != confirm_password:
 
@@ -293,30 +433,35 @@ def register():
                 error="Passwords do not match."
             )
 
+        # ------------------------------------------
+        # Create account
+        # ------------------------------------------
 
         created = create_user(
             username,
             password
         )
 
-
         if created:
 
-            return redirect(
-                "/login"
-            )
+            return redirect("/login")
 
+        # ------------------------------------------
+        # Duplicate username
+        # ------------------------------------------
 
         return render_template(
             "register.html",
-            error="Username already exists."
+            error="Username already exists. Please choose another username."
         )
 
+    # ----------------------------------------------
+    # GET request
+    # ----------------------------------------------
 
     return render_template(
         "register.html"
     )
-
 
 # ==================================================
 # LOGOUT
@@ -368,6 +513,8 @@ def change_password():
         )
 
 
+        # Verify current password
+
         if not verify_user(
             username,
             current_password
@@ -379,6 +526,8 @@ def change_password():
             )
 
 
+        # Check new password
+
         if not new_password:
 
             return render_template(
@@ -386,6 +535,65 @@ def change_password():
                 error="New password is required."
             )
 
+
+        # Password strength
+
+        if len(new_password) < 8:
+
+            return render_template(
+                "change_password.html",
+                error="New password must contain at least 8 characters."
+            )
+
+
+        if not any(
+            char.isupper()
+            for char in new_password
+        ):
+
+            return render_template(
+                "change_password.html",
+                error="New password must contain at least one uppercase letter."
+            )
+
+
+        if not any(
+            char.islower()
+            for char in new_password
+        ):
+
+            return render_template(
+                "change_password.html",
+                error="New password must contain at least one lowercase letter."
+            )
+
+
+        if not any(
+            char.isdigit()
+            for char in new_password
+        ):
+
+            return render_template(
+                "change_password.html",
+                error="New password must contain at least one number."
+            )
+
+
+        special_characters = "!@#$%^&*()_+-=[]{}|;:,.<>?/`~"
+
+
+        if not any(
+            char in special_characters
+            for char in new_password
+        ):
+
+            return render_template(
+                "change_password.html",
+                error="New password must contain at least one special character."
+            )
+
+
+        # Confirm new password
 
         if new_password != confirm_password:
 
@@ -395,6 +603,8 @@ def change_password():
             )
 
 
+        # Prevent same password
+
         if current_password == new_password:
 
             return render_template(
@@ -402,6 +612,8 @@ def change_password():
                 error="New password must be different from the current password."
             )
 
+
+        # Update password
 
         updated = update_password(
             username,
@@ -463,7 +675,8 @@ def dashboard():
     }
 
 
-    # Show a clean dashboard after login
+    # Show empty dashboard after login
+
     if session.get(
         "fresh_session",
         False
@@ -656,6 +869,8 @@ def alerts():
                     )
 
 
+                # Risk filter
+
                 if selected_risk != "ALL":
 
                     prepared_alerts = [
@@ -670,10 +885,13 @@ def alerts():
                                 ""
                             )
                         ).upper()
-                        == selected_risk
+                        ==
+                        selected_risk
 
                     ]
 
+
+                # Search filter
 
                 if search:
 
@@ -887,6 +1105,8 @@ def upload():
         )
 
 
+        # Check file
+
         if (
             not file
             or file.filename == ""
@@ -898,11 +1118,15 @@ def upload():
             )
 
 
+        # Create upload folder
+
         os.makedirs(
             app.config["UPLOAD_FOLDER"],
             exist_ok=True
         )
 
+
+        # Save uploaded file
 
         file_path = os.path.join(
             app.config["UPLOAD_FOLDER"],
@@ -915,10 +1139,14 @@ def upload():
         )
 
 
+        # Analyze file
+
         analysis = analyze_log_file(
             file_path
         )
 
+
+        # Check result
 
         if not analysis.get(
             "success",
@@ -931,15 +1159,20 @@ def upload():
             )
 
 
+        # Save analysis
+
         save_analysis(
             analysis,
             file.filename
         )
 
 
-        # Analysis has now been performed
+        # Allow dashboard to show latest analysis
+
         session["fresh_session"] = False
 
+
+        # Show analysis result
 
         return render_template(
             "analysis.html",
@@ -1093,6 +1326,8 @@ def ai_assistant():
                     advice = []
 
 
+                    # Brute Force
+
                     if "brute" in event:
 
                         advice = [
@@ -1107,6 +1342,8 @@ def ai_assistant():
 
                         ]
 
+
+                    # Port Scan
 
                     elif "port" in event:
 
@@ -1123,6 +1360,8 @@ def ai_assistant():
                         ]
 
 
+                    # Malware
+
                     elif "malware" in event:
 
                         advice = [
@@ -1138,6 +1377,8 @@ def ai_assistant():
                         ]
 
 
+                    # Login Attack
+
                     elif "login" in event:
 
                         advice = [
@@ -1152,6 +1393,8 @@ def ai_assistant():
 
                         ]
 
+
+                    # Default
 
                     else:
 
@@ -1225,17 +1468,14 @@ def block_suspicious_ip(ip):
 
         return render_template(
             "firewall_result.html",
-
             success=result.get(
                 "success",
                 False
             ),
-
             message=result.get(
                 "message",
                 "Firewall operation completed."
             ),
-
             ip=ip
         )
 
@@ -1250,11 +1490,8 @@ def block_suspicious_ip(ip):
 
         return render_template(
             "firewall_result.html",
-
             success=False,
-
             message=f"Unable to block IP: {error}",
-
             ip=ip
         )
 
@@ -1280,17 +1517,14 @@ def unblock_suspicious_ip(ip):
 
         return render_template(
             "firewall_result.html",
-
             success=result.get(
                 "success",
                 False
             ),
-
             message=result.get(
                 "message",
                 "Firewall operation completed."
             ),
-
             ip=ip
         )
 
@@ -1305,11 +1539,8 @@ def unblock_suspicious_ip(ip):
 
         return render_template(
             "firewall_result.html",
-
             success=False,
-
             message=f"Unable to unblock IP: {error}",
-
             ip=ip
         )
 

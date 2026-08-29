@@ -39,24 +39,8 @@ def init_db():
     """)
 
     connection.commit()
-
     connection.close()
 
-def user_exists():
-
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
-
-    cursor.execute(
-        "SELECT id FROM users LIMIT 1"
-    )
-
-    user = cursor.fetchone()
-
-    connection.close()
-
-    return user is not None
 
 # --------------------------------------------------
 # Create User
@@ -83,12 +67,17 @@ def create_user(username, password):
         )
 
         connection.commit()
-
         connection.close()
 
         return True
 
     except sqlite3.IntegrityError:
+
+        return False
+
+    except Exception as error:
+
+        print("Create user error:", error)
 
         return False
 

@@ -14,116 +14,1712 @@
 
 <link rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    /* ==================================================
+       REGISTER PAGE
+    ================================================== */
+
+    .register-page {
+
+        min-height: 100vh;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 30px;
+
+        background:
+            radial-gradient(
+                circle at 15% 20%,
+                rgba(54, 209, 220, 0.08),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 85% 80%,
+                rgba(139, 124, 246, 0.08),
+                transparent 30%
+            ),
+            var(--bg-main);
+    }
+
+
+    .register-container {
+
+        width: 100%;
+
+        max-width: 1050px;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        background: var(--bg-card);
+
+        border: 1px solid var(--border);
+
+        border-radius: 18px;
+
+        overflow: hidden;
+
+        box-shadow: var(--shadow);
+
+        animation: registerAppear 0.5s ease;
+    }
+
+
+    @keyframes registerAppear {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(15px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+        }
+
+    }
+
+
+    /* ==================================================
+       LEFT PANEL
+    ================================================== */
+
+    .register-info {
+
+        padding: 50px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(54, 209, 220, 0.08),
+                rgba(139, 124, 246, 0.06)
+            );
+
+        border-right: 1px solid var(--border);
+    }
+
+
+    .register-brand {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 65px;
+    }
+
+
+    .register-brand-icon {
+
+        width: 45px;
+
+        height: 45px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--primary),
+                var(--violet)
+            );
+
+        font-size: 20px;
+
+        box-shadow:
+            0 8px 25px rgba(54, 209, 220, 0.12);
+    }
+
+
+    .register-brand-name {
+
+        font-size: 21px;
+
+        font-weight: 700;
+    }
+
+
+    .register-brand-name span {
+
+        color: var(--primary);
+    }
+
+
+    .register-info h1 {
+
+        font-size: 38px;
+
+        line-height: 1.2;
+
+        margin-bottom: 20px;
+    }
+
+
+    .register-info h1 span {
+
+        color: var(--primary);
+    }
+
+
+    .register-description {
+
+        color: var(--text-muted);
+
+        line-height: 1.7;
+
+        margin-bottom: 35px;
+
+        font-size: 14px;
+    }
+
+
+    .security-feature {
+
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 13px;
+
+        margin-bottom: 22px;
+    }
+
+
+    .security-feature-icon {
+
+        width: 35px;
+
+        height: 35px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: rgba(54, 209, 220, 0.08);
+
+        color: var(--primary);
+
+        font-size: 15px;
+    }
+
+
+    .security-feature h3 {
+
+        font-size: 14px;
+
+        margin-bottom: 4px;
+    }
+
+
+    .security-feature p {
+
+        color: var(--text-muted);
+
+        font-size: 12px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ==================================================
+       RIGHT PANEL
+    ================================================== */
+
+    .register-form-section {
+
+        padding: 45px 50px;
+    }
+
+
+    .register-form-section h2 {
+
+        font-size: 27px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .register-subtitle {
+
+        color: var(--text-muted);
+
+        font-size: 13px;
+
+        margin-bottom: 28px;
+    }
+
+
+    /* ==================================================
+       FORM
+    ================================================== */
+
+    .form-group {
+
+        margin-bottom: 18px;
+    }
+
+
+    .form-group label {
+
+        display: block;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        margin-bottom: 8px;
+    }
+
+
+    .input-wrapper {
+
+        position: relative;
+    }
+
+
+    .form-input {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 13px 14px;
+
+        background: #1e3042;
+
+        border: 1px solid var(--border);
+
+        border-radius: 8px;
+
+        color: var(--text-main);
+
+        outline: none;
+
+        font-size: 14px;
+
+        transition: 0.25s ease;
+    }
+
+
+    .form-input::placeholder {
+
+        color: var(--text-muted);
+
+        opacity: 0.75;
+    }
+
+
+    .form-input:focus {
+
+        border-color: var(--primary);
+
+        box-shadow:
+            0 0 0 3px rgba(54, 209, 220, 0.08);
+
+        transform: translateY(-1px);
+    }
+
+
+    .password-input {
+
+        padding-right: 55px;
+    }
+
+
+    .show-password {
+
+        position: absolute;
+
+        right: 12px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        border: none;
+
+        background: transparent;
+
+        color: var(--text-muted);
+
+        cursor: pointer;
+
+        font-size: 12px;
+
+        font-weight: 600;
+    }
+
+
+    .show-password:hover {
+
+        color: var(--primary);
+    }
+
+
+    /* ==================================================
+       USERNAME STATUS
+    ================================================== */
+
+    .username-status {
+
+        margin-top: 6px;
+
+        font-size: 11px;
+
+        min-height: 15px;
+    }
+
+
+    .status-success {
+
+        color: var(--primary);
+    }
+
+
+    .status-error {
+
+        color: var(--danger);
+    }
+
+
+    /* ==================================================
+       PASSWORD STRENGTH
+    ================================================== */
+
+    .password-strength {
+
+        margin-top: 9px;
+    }
+
+
+    .strength-bar {
+
+        width: 100%;
+
+        height: 5px;
+
+        background: #26394a;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+    }
+
+
+    .strength-fill {
+
+        width: 0%;
+
+        height: 100%;
+
+        border-radius: 10px;
+
+        transition:
+            width 0.3s ease,
+            background 0.3s ease;
+    }
+
+
+    .strength-text {
+
+        margin-top: 6px;
+
+        font-size: 11px;
+
+        color: var(--text-muted);
+
+        min-height: 15px;
+    }
+
+
+    /* ==================================================
+       PASSWORD REQUIREMENTS
+    ================================================== */
+
+    .password-requirements {
+
+        margin-top: 12px;
+
+        padding: 12px;
+
+        border-radius: 8px;
+
+        background: rgba(54, 209, 220, 0.03);
+
+        border: 1px solid var(--border);
+    }
+
+
+    .requirements-title {
+
+        font-size: 11px;
+
+        color: var(--text-muted);
+
+        margin-bottom: 8px;
+    }
+
+
+    .requirement {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        font-size: 11px;
+
+        color: var(--text-muted);
+
+        margin-bottom: 6px;
+
+        transition: 0.2s ease;
+    }
+
+
+    .requirement:last-child {
+
+        margin-bottom: 0;
+    }
+
+
+    .requirement-icon {
+
+        width: 14px;
+
+        height: 14px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        border: 1px solid var(--border);
+
+        font-size: 8px;
+
+        flex-shrink: 0;
+    }
+
+
+    .requirement.valid {
+
+        color: var(--primary);
+    }
+
+
+    .requirement.valid .requirement-icon {
+
+        border-color: var(--primary);
+
+        background: rgba(54, 209, 220, 0.1);
+    }
+
+
+    /* ==================================================
+       PASSWORD MATCH
+    ================================================== */
+
+    .password-match {
+
+        margin-top: 7px;
+
+        font-size: 11px;
+
+        min-height: 15px;
+    }
+
+
+    .match-success {
+
+        color: var(--primary);
+    }
+
+
+    .match-error {
+
+        color: var(--danger);
+    }
+
+
+    /* ==================================================
+       ERROR MESSAGE
+    ================================================== */
+
+    .error-message {
+
+        background: rgba(255, 100, 124, 0.08);
+
+        border: 1px solid rgba(255, 100, 124, 0.25);
+
+        color: var(--danger);
+
+        padding: 12px;
+
+        border-radius: 8px;
+
+        margin-bottom: 20px;
+
+        font-size: 13px;
+
+        animation: messageAppear 0.3s ease;
+    }
+
+
+    @keyframes messageAppear {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(-5px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+        }
+
+    }
+
+
+    /* ==================================================
+       REGISTER BUTTON
+    ================================================== */
+
+    .register-button {
+
+        width: 100%;
+
+        padding: 13px;
+
+        margin-top: 8px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background:
+            linear-gradient(
+                90deg,
+                var(--primary),
+                #5bd8e1
+            );
+
+        color: #07141c;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.25s ease;
+    }
+
+
+    .register-button:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 8px 20px rgba(54, 209, 220, 0.15);
+    }
+
+
+    .register-button:disabled {
+
+        opacity: 0.55;
+
+        cursor: not-allowed;
+
+        transform: none;
+
+        box-shadow: none;
+    }
+
+
+    /* ==================================================
+       LOGIN LINK
+    ================================================== */
+
+    .login-link {
+
+        text-align: center;
+
+        margin-top: 20px;
+
+        font-size: 12px;
+
+        color: var(--text-muted);
+    }
+
+
+    .login-link a {
+
+        color: var(--primary);
+
+        text-decoration: none;
+
+        font-weight: 600;
+    }
+
+
+    .login-link a:hover {
+
+        text-decoration: underline;
+    }
+
+
+    .register-footer {
+
+        text-align: center;
+
+        margin-top: 22px;
+
+        font-size: 10px;
+
+        color: var(--text-muted);
+    }
+
+
+    /* ==================================================
+       MOBILE
+    ================================================== */
+
+    @media (max-width: 750px) {
+
+        .register-container {
+
+            grid-template-columns: 1fr;
+        }
+
+
+        .register-info {
+
+            display: none;
+        }
+
+
+        .register-form-section {
+
+            padding: 35px 25px;
+        }
+
+    }
+
+</style>
 ```
 
 </head>
 
 <body>
 
-<div class="auth-container">
+<div class="register-page">
 
 ```
-<div class="auth-card">
-
-    <h1>Create Account</h1>
-
-    <p class="text-muted">
-        Create your SOC Analyst account
-    </p>
+<div class="register-container">
 
 
-    {% if error %}
+    <!-- ==================================================
+         LEFT INFORMATION PANEL
+    ================================================== -->
 
-    <div class="alert alert-danger">
+    <div class="register-info">
 
-        {{ error }}
+
+        <div class="register-brand">
+
+            <div class="register-brand-icon">
+                ◉
+            </div>
+
+            <div class="register-brand-name">
+                AI <span>SOC</span> Assistant
+            </div>
+
+        </div>
+
+
+        <h1>
+
+            Create your
+            <span>secure account.</span>
+
+        </h1>
+
+
+        <p class="register-description">
+
+            Create an account to access the
+            AI-powered Security Operations Center
+            and begin analyzing security activity.
+
+        </p>
+
+
+        <div class="security-feature">
+
+            <div class="security-feature-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <h3>
+                    Secure Authentication
+                </h3>
+
+                <p>
+                    Passwords are securely hashed before
+                    being stored in the local database.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="security-feature">
+
+            <div class="security-feature-icon">
+                ✦
+            </div>
+
+            <div>
+
+                <h3>
+                    Security Monitoring
+                </h3>
+
+                <p>
+                    Monitor alerts and suspicious activity
+                    through the SOC dashboard.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="security-feature">
+
+            <div class="security-feature-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <h3>
+                    AI Security Analysis
+                </h3>
+
+                <p>
+                    Analyze security logs and investigate
+                    detected security events.
+                </p>
+
+            </div>
+
+        </div>
+
 
     </div>
 
-    {% endif %}
+
+    <!-- ==================================================
+         RIGHT REGISTRATION FORM
+    ================================================== -->
+
+    <div class="register-form-section">
 
 
-    <form method="POST">
-
-        <div class="form-group">
-
-            <label>
-                Username
-            </label>
-
-            <input
-                type="text"
-                name="username"
-                class="form-input"
-                placeholder="Choose a username"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Password
-            </label>
-
-            <input
-                type="password"
-                name="password"
-                class="form-input"
-                placeholder="Choose a password"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Confirm Password
-            </label>
-
-            <input
-                type="password"
-                name="confirm_password"
-                class="form-input"
-                placeholder="Confirm your password"
-                required
-            >
-
-        </div>
-
-
-        <button
-            type="submit"
-            class="btn btn-primary"
-            style="width: 100%;">
-
+        <h2>
             Create Account
-
-        </button>
-
-    </form>
+        </h2>
 
 
-    <p style="margin-top: 20px;">
+        <p class="register-subtitle">
 
-        Already have an account?
+            Create your credentials to access the SOC.
 
-        <a href="/login">
+        </p>
 
-            Login
 
-        </a>
+        {% if error %}
 
-    </p>
+        <div class="error-message">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <form
+            action="/register"
+            method="POST"
+            onsubmit="return validateRegistration()"
+        >
+
+
+            <!-- ==================================================
+                 USERNAME
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-input"
+                    placeholder="Choose a username"
+                    minlength="3"
+                    maxlength="30"
+                    autocomplete="username"
+                    required
+                    oninput="checkUsername()"
+                >
+
+
+                <div
+                    id="usernameStatus"
+                    class="username-status">
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 PASSWORD
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-input password-input"
+                        placeholder="Create a strong password"
+                        maxlength="128"
+                        autocomplete="new-password"
+                        required
+                        oninput="checkPassword()"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        onclick="togglePassword(
+                            'password',
+                            this
+                        )"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <!-- PASSWORD STRENGTH -->
+
+                <div class="password-strength">
+
+                    <div class="strength-bar">
+
+                        <div
+                            id="strengthFill"
+                            class="strength-fill">
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="strengthText"
+                        class="strength-text">
+
+                        Enter a password
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD REQUIREMENTS -->
+
+                <div class="password-requirements">
+
+                    <div class="requirements-title">
+
+                        Password requirements
+
+                    </div>
+
+
+                    <div
+                        id="lengthRequirement"
+                        class="requirement">
+
+                        <span class="requirement-icon">
+                            ✓
+                        </span>
+
+                        At least 8 characters
+
+                    </div>
+
+
+                    <div
+                        id="upperRequirement"
+                        class="requirement">
+
+                        <span class="requirement-icon">
+                            ✓
+                        </span>
+
+                        One uppercase letter
+
+                    </div>
+
+
+                    <div
+                        id="lowerRequirement"
+                        class="requirement">
+
+                        <span class="requirement-icon">
+                            ✓
+                        </span>
+
+                        One lowercase letter
+
+                    </div>
+
+
+                    <div
+                        id="numberRequirement"
+                        class="requirement">
+
+                        <span class="requirement-icon">
+                            ✓
+                        </span>
+
+                        One number
+
+                    </div>
+
+
+                    <div
+                        id="specialRequirement"
+                        class="requirement">
+
+                        <span class="requirement-icon">
+                            ✓
+                        </span>
+
+                        One special character
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CONFIRM PASSWORD
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        class="form-input password-input"
+                        placeholder="Confirm your password"
+                        maxlength="128"
+                        autocomplete="new-password"
+                        required
+                        oninput="checkMatch()"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        onclick="togglePassword(
+                            'confirm_password',
+                            this
+                        )"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="matchMessage"
+                    class="password-match">
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CREATE ACCOUNT
+            ================================================== -->
+
+            <button
+                type="submit"
+                id="registerButton"
+                class="register-button"
+            >
+                Create Secure Account
+            </button>
+
+
+        </form>
+
+
+        <!-- LOGIN -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="/login">
+                Sign in
+            </a>
+
+        </div>
+
+
+        <div class="register-footer">
+
+            AI SOC Assistant · Security Operations Platform
+
+        </div>
+
+
+    </div>
 
 </div>
 ```
 
 </div>
+
+<script>
+
+
+/* ==================================================
+   PASSWORD TOGGLE
+================================================== */
+
+function togglePassword(
+    fieldId,
+    button
+) {
+
+    const field =
+        document.getElementById(fieldId);
+
+
+    if (field.type === "password") {
+
+        field.type = "text";
+
+        button.textContent = "Hide";
+
+    } else {
+
+        field.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+
+/* ==================================================
+   USERNAME VALIDATION
+================================================== */
+
+function checkUsername() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+
+    const status =
+        document.getElementById("usernameStatus");
+
+
+    if (!username) {
+
+        status.textContent = "";
+
+        status.className =
+            "username-status";
+
+        return;
+
+    }
+
+
+    if (username.length < 3) {
+
+        status.textContent =
+            "Username must contain at least 3 characters.";
+
+        status.className =
+            "username-status status-error";
+
+        return;
+
+    }
+
+
+    if (username.length > 30) {
+
+        status.textContent =
+            "Username must not exceed 30 characters.";
+
+        status.className =
+            "username-status status-error";
+
+        return;
+
+    }
+
+
+    if (!/^[A-Za-z0-9_.]+$/.test(username)) {
+
+        status.textContent =
+            "Only letters, numbers, underscore and dot are allowed.";
+
+        status.className =
+            "username-status status-error";
+
+        return;
+
+    }
+
+
+    status.textContent =
+        "✓ Username format is valid";
+
+    status.className =
+        "username-status status-success";
+
+}
+
+
+/* ==================================================
+   PASSWORD VALIDATION
+================================================== */
+
+function checkPassword() {
+
+    const password =
+        document.getElementById("password").value;
+
+
+    const fill =
+        document.getElementById("strengthFill");
+
+
+    const text =
+        document.getElementById("strengthText");
+
+
+    const length =
+        password.length >= 8;
+
+
+    const upper =
+        /[A-Z]/.test(password);
+
+
+    const lower =
+        /[a-z]/.test(password);
+
+
+    const number =
+        /[0-9]/.test(password);
+
+
+    const special =
+        /[^A-Za-z0-9]/.test(password);
+
+
+    updateRequirement(
+        "lengthRequirement",
+        length
+    );
+
+
+    updateRequirement(
+        "upperRequirement",
+        upper
+    );
+
+
+    updateRequirement(
+        "lowerRequirement",
+        lower
+    );
+
+
+    updateRequirement(
+        "numberRequirement",
+        number
+    );
+
+
+    updateRequirement(
+        "specialRequirement",
+        special
+    );
+
+
+    let score = 0;
+
+
+    if (length) score++;
+
+    if (upper) score++;
+
+    if (lower) score++;
+
+    if (number) score++;
+
+    if (special) score++;
+
+
+    if (password.length === 0) {
+
+        fill.style.width = "0%";
+
+        text.textContent =
+            "Enter a password";
+
+        checkMatch();
+
+        return;
+
+    }
+
+
+    if (score <= 1) {
+
+        fill.style.width = "20%";
+
+        text.textContent =
+            "Very weak password";
+
+    }
+
+    else if (score === 2) {
+
+        fill.style.width = "40%";
+
+        text.textContent =
+            "Weak password";
+
+    }
+
+    else if (score === 3) {
+
+        fill.style.width = "60%";
+
+        text.textContent =
+            "Fair password";
+
+    }
+
+    else if (score === 4) {
+
+        fill.style.width = "80%";
+
+        text.textContent =
+            "Good password";
+
+    }
+
+    else {
+
+        fill.style.width = "100%";
+
+        text.textContent =
+            "Strong password";
+
+    }
+
+
+    checkMatch();
+
+}
+
+
+/* ==================================================
+   REQUIREMENT STATUS
+================================================== */
+
+function updateRequirement(
+    id,
+    valid
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (valid) {
+
+        element.classList.add("valid");
+
+    } else {
+
+        element.classList.remove("valid");
+
+    }
+
+}
+
+
+/* ==================================================
+   PASSWORD MATCH
+================================================== */
+
+function checkMatch() {
+
+    const password =
+        document.getElementById("password").value;
+
+
+    const confirm =
+        document.getElementById("confirm_password").value;
+
+
+    const message =
+        document.getElementById("matchMessage");
+
+
+    if (!confirm) {
+
+        message.textContent = "";
+
+        message.className =
+            "password-match";
+
+        return;
+
+    }
+
+
+    if (password === confirm) {
+
+        message.textContent =
+            "✓ Passwords match";
+
+        message.className =
+            "password-match match-success";
+
+    } else {
+
+        message.textContent =
+            "✕ Passwords do not match";
+
+        message.className =
+            "password-match match-error";
+
+    }
+
+}
+
+
+/* ==================================================
+   COMPLETE FORM VALIDATION
+================================================== */
+
+function validateRegistration() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+
+    const password =
+        document.getElementById("password").value;
+
+
+    const confirm =
+        document.getElementById("confirm_password").value;
+
+
+    /* Username */
+
+    if (!username) {
+
+        alert(
+            "Username is required."
+        );
+
+        return false;
+
+    }
+
+
+    if (username.length < 3) {
+
+        alert(
+            "Username must contain at least 3 characters."
+        );
+
+        return false;
+
+    }
+
+
+    if (username.length > 30) {
+
+        alert(
+            "Username must not exceed 30 characters."
+        );
+
+        return false;
+
+    }
+
+
+    if (!/^[A-Za-z0-9_.]+$/.test(username)) {
+
+        alert(
+            "Username can contain only letters, numbers, underscore and dot."
+        );
+
+        return false;
+
+    }
+
+
+    /* Password */
+
+    if (!password) {
+
+        alert(
+            "Password is required."
+        );
+
+        return false;
+
+    }
+
+
+    if (password.length < 8) {
+
+        alert(
+            "Password must contain at least 8 characters."
+        );
+
+        return false;
+
+    }
+
+
+    if (password.length > 128) {
+
+        alert(
+            "Password must not exceed 128 characters."
+        );
+
+        return false;
+
+    }
+
+
+    if (!/[A-Z]/.test(password)) {
+
+        alert(
+            "Password must contain at least one uppercase letter."
+        );
+
+        return false;
+
+    }
+
+
+    if (!/[a-z]/.test(password)) {
+
+        alert(
+            "Password must contain at least one lowercase letter."
+        );
+
+        return false;
+
+    }
+
+
+    if (!/[0-9]/.test(password)) {
+
+        alert(
+            "Password must contain at least one number."
+        );
+
+        return false;
+
+    }
+
+
+    if (!/[^A-Za-z0-9]/.test(password)) {
+
+        alert(
+            "Password must contain at least one special character."
+        );
+
+        return false;
+
+    }
+
+
+    /* Username cannot be password */
+
+    if (
+        password.toLowerCase()
+        ===
+        username.toLowerCase()
+    ) {
+
+        alert(
+            "Password cannot be the same as your username."
+        );
+
+        return false;
+
+    }
+
+
+    /* Common passwords */
+
+    const weakPasswords = [
+
+        "password",
+        "password123",
+        "admin123",
+        "12345678",
+        "123456789",
+        "1234567890",
+        "qwerty123",
+        "qwertyui",
+        "welcome123",
+        "adminadmin",
+        "letmein123"
+
+    ];
+
+
+    if (
+        weakPasswords.includes(
+            password.toLowerCase()
+        )
+    ) {
+
+        alert(
+            "This password is too common. Please choose a stronger password."
+        );
+
+        return false;
+
+    }
+
+
+    /* Confirm password */
+
+    if (!confirm) {
+
+        alert(
+            "Please confirm your password."
+        );
+
+        return false;
+
+    }
+
+
+    if (password !== confirm) {
+
+        alert(
+            "Passwords do not match."
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+</script>
 
 </body>
 
