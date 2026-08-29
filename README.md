@@ -2,64 +2,83 @@
 
 ## About the Project
 
-AI SOC Assistant is a web-based cybersecurity project developed using Python and Flask.
+AI SOC Assistant is a web-based cybersecurity project developed using **Python and Flask**.
 
-The project helps a security analyst upload and analyze log files, identify suspicious security events, view alerts, check security reports and receive security recommendations.
+The project provides a simple Security Operations Center (SOC) interface where a security analyst can:
 
-It also includes a firewall module that can be used to block or unblock suspicious IP addresses through Windows Defender Firewall.
+* Create an account and log in securely
+* Upload and analyze security log files
+* Detect suspicious security events
+* View and filter security alerts
+* Check detailed alert information
+* Generate security reports
+* Get rule-based security recommendations
+* Block or unblock suspicious IP addresses
+* Manage account passwords
+
+The project also integrates with **Windows Defender Firewall** for basic IP blocking and unblocking.
 
 ---
 
 ## Main Features
 
-* User login
+* User registration and login
+* Password hashing using Werkzeug
+* Password strength validation during registration
+* Change password functionality
+* Session-based authentication
 * Security dashboard
 * Log file upload and analysis
-* Security alert detection
+* Security event detection
 * Alert search and risk filtering
 * Alert details
 * Security reports
-* Rule-based security recommendations
+* Rule-based AI security recommendations
 * Suspicious IP blocking and unblocking
 * Windows Defender Firewall integration
+* Fresh dashboard after login
+* Local SQLite database for user accounts
+* JSON-based storage for analysis results
 
 ---
 
 ## Technologies Used
 
 * **Python 3.12.1** – Main programming language
-* **Flask 3.0.3** – Web application backend
-* **Werkzeug 3.0.4** – Flask's web server and utility components
-* **HTML** – Page structure
-* **CSS** – Page styling and layout
-* **JSON** – Local storage of analysis results
+* **Flask 3.0.3** – Web application framework
+* **Werkzeug 3.0.4** – Password hashing and Flask utilities
+* **SQLite** – Local database for user accounts
+* **HTML** – Web page structure
+* **CSS** – User interface styling
+* **Jinja2** – Dynamic HTML templates
+* **JSON** – Storage of log analysis results
 * **Windows Defender Firewall** – IP blocking and unblocking
-* **netsh** – Command used to manage Windows Firewall rules
+* **netsh** – Windows command used for firewall management
 
+---
 
 ## Project Structure
 
 ```text
-AI_SOC_Assistant/
+AI-SOC-Assistant/
 │
 ├── app.py
+├── database.py
+├── requirements.txt
 ├── README.md
-├── PRD.md
-├── SRS.md
-├── Architecture.md
-├── UI_UX.md
-├── Documentation_Plan.md
-├── Viva_Questions.md
+├── .gitignore
 │
 ├── analyzer/
 │   ├── log_analyzer.py
-│   └── test_log_analyzer.py
+│   └── test_analyzer.py
 │
 ├── security/
 │   └── firewall_manager.py
 │
 ├── templates/
 │   ├── login.html
+│   ├── register.html
+│   ├── change_password.html
 │   ├── index.html
 │   ├── dashboard.html
 │   ├── upload.html
@@ -69,20 +88,29 @@ AI_SOC_Assistant/
 │   ├── reports.html
 │   ├── ai.html
 │   ├── firewall_result.html
+│   │
 │   └── components/
 │       └── sidebar.html
 │
 ├── static/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   └── images/
+│   └── css/
+│       └── style.css
+│
+├── Documentation/
+│   ├── Architecture.md
+│   ├── Documentation_Plan.md
+│   ├── PRD.md
+│   ├── SRS.md
+│   └── UI_UX.md
 │
 ├── data/
+│   ├── users.db
 │   └── analysis_data.json
 │
 └── uploads/
 ```
+
+> `users.db` and `analysis_data.json` are local files and are excluded from GitHub using `.gitignore`.
 
 ---
 
@@ -91,18 +119,20 @@ AI_SOC_Assistant/
 The basic workflow is:
 
 ```text
+Create Account
+      ↓
 Login
-  ↓
+      ↓
 Dashboard
-  ↓
+      ↓
 Upload Log File
-  ↓
+      ↓
 Log Analyzer
-  ↓
+      ↓
 Security Events
-  ↓
+      ↓
 Alerts
-  ↓
+      ↓
 Reports / AI Recommendations
 ```
 
@@ -120,145 +150,399 @@ Block / Unblock IP
 
 ---
 
+## Authentication System
+
+The project includes a local user authentication system.
+
+### Create Account
+
+A new user can create an account from the registration page.
+
+The registration system checks:
+
+* Username
+* Password
+* Confirm password
+* Password strength
+* Required fields
+* Password confirmation
+* Duplicate username
+
+Passwords are stored as **hashed passwords**, not plain text.
+
+### Login
+
+Users log in using the credentials created during registration.
+
+The application verifies the username and password using the SQLite database.
+
+### Change Password
+
+Logged-in users can change their password from:
+
+```text
+Change Password
+```
+
+The system verifies:
+
+* Current password
+* New password
+* Confirm new password
+* New password is different from the old password
+
+### Logout
+
+The logout option clears the current Flask session and returns the user to the login page.
+
+---
+
 ## Main Project Files
 
 ### `app.py`
 
-The main Flask application. It handles login, page navigation, log uploads, alerts, reports, AI recommendations and firewall actions.
+The main Flask application.
+
+It handles:
+
+* Login
+* Registration
+* Logout
+* Change password
+* Dashboard
+* Log uploads
+* Alerts
+* Alert details
+* Reports
+* AI Assistant
+* Firewall actions
+
+### `database.py`
+
+Handles the SQLite user database.
+
+It provides functions for:
+
+* Creating the database
+* Creating users
+* Checking users
+* Verifying login credentials
+* Updating passwords
+
+Passwords are protected using Werkzeug password hashing.
 
 ### `analyzer/log_analyzer.py`
 
-Analyzes uploaded log files and identifies suspicious events and their risk levels.
+Analyzes uploaded log files and identifies suspicious security events and their risk levels.
 
-### `analyzer/test_log_analyzer.py`
+### `analyzer/test_analyzer.py`
 
-Used to test the log analysis functionality.
+Contains tests for the log analyzer functionality.
 
 ### `security/firewall_manager.py`
 
-Handles IP validation and firewall operations such as blocking and unblocking IP addresses.
+Handles firewall-related operations such as:
+
+* IP validation
+* Blocking IP addresses
+* Unblocking IP addresses
+* Checking whether an IP is blocked
 
 ### `templates/`
 
-Contains the HTML pages used by the application.
+Contains the HTML pages used by the Flask application.
+
+### `templates/components/sidebar.html`
+
+Contains the common sidebar navigation, including:
+
+* Home
+* Dashboard
+* Log Analysis
+* Alerts
+* Reports
+* AI Assistant
+* Change Password
+* Logout
 
 ### `static/css/style.css`
 
 Contains the common styling and visual design of the application.
 
+### `data/users.db`
+
+SQLite database containing registered user account information.
+
+Passwords are stored in hashed form.
+
 ### `data/analysis_data.json`
 
-Stores the results of the latest log analyses and detected security events.
+Stores the results of log analysis.
 
 ### `uploads/`
 
-Stores log files uploaded for analysis.
+Stores log files uploaded by the user for analysis.
 
 ---
 
 ## Running the Project
 
-### 1. Open the project
+### 1. Clone the Repository
 
-Open the `AI_SOC_Assistant` folder in VS Code.
+Clone the project from GitHub:
 
-### 2. Install required packages
-
-If Flask is not installed, run:
-
-```text
-pip install Flask==3.0.3 Werkzeug==3.0.4
+```bash
+git clone https://github.com/Utkarshshukla4/AI-SOC-Assistant.git
 ```
 
-### 3. Start the application
+Then open the project folder in VS Code.
 
-Run:
+### 2. Create a Virtual Environment
 
-```text
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### 3. Install Requirements
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Start the Application
+
+```bash
 python app.py
 ```
 
-### 4. Open in the browser
+### 5. Open the Application
 
-Open the local Flask address shown in the terminal, normally:
+Open:
 
 ```text
 http://127.0.0.1:5000
 ```
 
+The application will open on the login page.
+
 ---
 
+## First-Time Setup
+
+When someone downloads and runs the project for the first time, they can create their own account using:
+
+```text
+Create Account
+```
+
+After creating an account:
+
+```text
+Create Account
+      ↓
+Login
+      ↓
+Dashboard
+```
+
+The project does **not require a shared demo username and password**.
+
+This allows each person running their own local copy of the project to create their own account.
+
+---
 
 ## Sample Log Testing
 
-Sample and test log files can be uploaded through the Log Analysis section.
+A security log file can be uploaded through:
 
-The analyzer checks the contents of the log and detects security-related events. Different test log files can produce different results depending on the events and IP addresses contained in them.
+```text
+Dashboard → Log Analysis
+```
 
-The results can then be checked through:
+The analyzer processes the uploaded file and identifies security-related events.
+
+The results can then be viewed through:
 
 * Dashboard
 * Alerts
+* Alert Details
 * Reports
 * AI Assistant
+
+Different log files can produce different results depending on their contents.
+
+---
+
+## Dashboard
+
+The dashboard provides an overview of the latest analysis.
+
+It displays:
+
+* Total alerts
+* Critical alerts
+* High-risk alerts
+* Medium-risk alerts
+* Low-risk alerts
+* Threat score
+* Overall risk
+* Recent security events
+
+After a new login, the dashboard starts with a clean state. Once a new log is uploaded and analyzed, the new analysis becomes available throughout the application.
+
+---
+
+## Alerts
+
+The Alerts section allows the analyst to review detected security events.
+
+Alerts can be:
+
+* Viewed
+* Searched
+* Filtered by risk level
+* Opened for detailed information
+
+Available risk levels include:
+
+```text
+CRITICAL
+HIGH
+MEDIUM
+LOW
+```
 
 ---
 
 ## AI Assistant
 
-The AI Assistant currently uses rule-based security recommendations.
+The AI Assistant currently uses **rule-based security recommendations**.
 
-It checks the detected event type and provides relevant security advice.
+It checks detected event types and provides relevant security advice.
 
-For example, for a brute-force event it may recommend:
+For example, a brute-force event may result in recommendations such as:
 
-* Blocking the suspicious IP example : 192.0.2.10
-* Enabling MFA
-* Reviewing failed login attempts
-* Checking account security
+* Block the suspicious IP
+* Enable account lockout
+* Enable MFA
+* Review failed login attempts
+
+The current implementation is rule-based and does not use an external AI API or trained machine-learning model.
 
 ---
 
 ## Firewall Feature
 
-The firewall module can block or unblock suspicious IP addresses using Windows Defender Firewall.
+The firewall module can block or unblock suspicious IP addresses using **Windows Defender Firewall**.
 
-The application uses the Windows `netsh` command to create and remove firewall rules.
+The application uses the Windows `netsh` command to manage firewall rules.
 
-Administrator privileges may be required when performing firewall operations.
+Firewall operations may require **Administrator privileges**.
 
-For testing and presentation, controlled test IP addresses should be used instead of important real system or network addresses.
+For testing and demonstration, use controlled test IP addresses rather than important real system or network addresses.
 
 ---
 
 ## Data Storage
 
-The project stores analysis results locally in:
+The project uses two main types of local storage.
+
+### User Database
+
+```text
+data/users.db
+```
+
+This SQLite database stores registered users and their hashed passwords.
+
+### Analysis Data
 
 ```text
 data/analysis_data.json
 ```
 
-Uploaded log files are stored in:
+This file stores the results of log analysis.
+
+### Uploaded Logs
 
 ```text
 uploads/
 ```
 
+Uploaded log files are stored locally for analysis.
+
+These local data files are excluded from GitHub through `.gitignore`.
+
+---
+
+## Security Considerations
+
+The project includes several basic security practices:
+
+* Password hashing
+* Session-based authentication
+* Login protection for application pages
+* Password confirmation
+* Password strength validation
+* Input validation
+* SQLite parameterized queries
+* Local firewall integration
+
+However, this project is primarily designed as an academic and demonstration application rather than a production SOC platform.
+
 ---
 
 ## Limitations
 
-* The AI Assistant currently uses rule-based recommendations rather than a trained machine-learning model.
+* The AI Assistant currently uses rule-based recommendations.
+* The log analyzer supports the log formats implemented in the project.
 * Firewall operations may require administrator privileges.
-* The project is designed as a cybersecurity academic project and demonstration tool.
+* User accounts are stored locally in SQLite.
+* Analysis results are stored locally in JSON.
+* The project is designed primarily for Windows because of its Windows Defender Firewall integration.
+* The application is intended for academic learning, demonstration and portfolio purposes.
+
+---
+
+## Documentation
+
+Additional project documentation is available in the `Documentation` folder:
+
+```text
+Documentation/
+├── Architecture.md
+├── Documentation_Plan.md
+├── PRD.md
+├── SRS.md
+└── UI_UX.md
+```
+
+These documents describe the project's requirements, architecture, planning and interface design.
 
 ---
 
 ## Project Purpose
 
-The main purpose of this project is to provide a simple SOC-style interface where a security analyst can analyze logs, monitor alerts, review security reports, receive security recommendations and perform basic IP response actions.
+The main purpose of AI SOC Assistant is to demonstrate how a simple SOC-style security application can combine:
 
+* Web development
+* Log analysis
+* Security monitoring
+* User authentication
+* Alert management
+* Security recommendations
+* Firewall response
+
+The project was developed as a cybersecurity academic and portfolio project.
+
+---
 
 ## Author
-Utkarsh Shukla
+
+**Utkarsh Shukla**
