@@ -258,3 +258,7 @@ uploads/
 ## Project Purpose
 
 The main purpose of this project is to provide a simple SOC-style interface where a security analyst can analyze logs, monitor alerts, review security reports, receive security recommendations and perform basic IP response actions.
+
+
+## Author
+Utkarsh Shukla
