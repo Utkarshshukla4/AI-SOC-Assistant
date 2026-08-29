@@ -1,0 +1,17 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+uploads/*
+!uploads/.gitkeep
+
+data/analysis_data.json
+
+*.db
+*.sqlite
+*.sqlite3
+
+.env
+
+.vscode/

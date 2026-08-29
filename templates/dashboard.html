@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - AI SOC Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+{% include 'components/sidebar.html' %}
+
+<main class="main-content">
+
+
+    <!-- ===================================================== -->
+    <!-- TOP BAR                                                -->
+    <!-- ===================================================== -->
+
+    <header class="topbar">
+
+
+        <div class="topbar-title">
+
+            Security Operations Center
+
+        </div>
+
+
+        <div class="user-area">
+
+
+            <div class="notification">
+
+                ♢
+
+            </div>
+
+
+            <div class="user">
+
+
+                <div class="avatar">
+
+                    A
+
+                </div>
+
+
+                <span>
+
+                    Analyst
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ===================================================== -->
+    <!-- PAGE CONTENT                                           -->
+    <!-- ===================================================== -->
+
+    <section class="page-container fade-in">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+
+            <p class="text-primary">
+
+                SECURITY OPERATIONS CENTER
+
+            </p>
+
+
+            <h1>
+
+                Security Dashboard
+
+            </h1>
+
+
+            <p>
+
+                Monitor security events,
+                threats and system activity.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- STATISTICS CARDS                                   -->
+        <!-- ================================================= -->
+
+        <div class="stats-grid">
+
+
+            <!-- TOTAL ALERTS -->
+
+            <a href="/alerts?risk=ALL"
+               class="card stat-card"
+               style="
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                    cursor: pointer;
+               ">
+
+
+                <div class="stat-top">
+
+
+                    <span class="stat-title">
+
+                        Total Alerts
+
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        !
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    {{ data.total_alerts }}
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Click to view all alerts
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- CRITICAL -->
+
+            <a href="/alerts?risk=CRITICAL"
+               class="card stat-card"
+               style="
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                    cursor: pointer;
+               ">
+
+
+                <div class="stat-top">
+
+
+                    <span class="stat-title">
+
+                        Critical
+
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        ⚠
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stat-number text-danger">
+
+                    {{ data.critical }}
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Click to view critical alerts
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- HIGH -->
+
+            <a href="/alerts?risk=HIGH"
+               class="card stat-card"
+               style="
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                    cursor: pointer;
+               ">
+
+
+                <div class="stat-top">
+
+
+                    <span class="stat-title">
+
+                        High Risk
+
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        ▲
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stat-number text-danger">
+
+                    {{ data.high }}
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Click to view high-risk alerts
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- MEDIUM -->
+
+            <a href="/alerts?risk=MEDIUM"
+               class="card stat-card"
+               style="
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                    cursor: pointer;
+               ">
+
+
+                <div class="stat-top">
+
+
+                    <span class="stat-title">
+
+                        Medium Risk
+
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        ◐
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stat-number text-warning">
+
+                    {{ data.medium }}
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Click to view medium-risk alerts
+
+                </div>
+
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- LOW ALERTS                                         -->
+        <!-- ================================================= -->
+
+        <div style="
+            margin-top: 20px;
+        ">
+
+
+            <a href="/alerts?risk=LOW"
+               class="card stat-card"
+               style="
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                    cursor: pointer;
+               ">
+
+
+                <div class="stat-top">
+
+
+                    <span class="stat-title">
+
+                        Low Risk
+
+                    </span>
+
+
+                    <div class="stat-icon">
+
+                        ✓
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stat-number">
+
+                    {{ data.low }}
+
+                </div>
+
+
+                <div class="stat-description">
+
+                    Click to view low-risk alerts
+
+                </div>
+
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- THREAT SCORE                                      -->
+        <!-- ================================================= -->
+
+        <div class="card"
+             style="
+                margin-top: 20px;
+                padding: 25px;
+             ">
+
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            ">
+
+
+                <div>
+
+
+                    <p class="text-primary">
+
+                        SECURITY ASSESSMENT
+
+                    </p>
+
+
+                    <h2 style="
+                        margin-top: 5px;
+                    ">
+
+                        Threat Score
+
+                    </h2>
+
+
+                    <p style="
+                        color: var(--text-muted);
+                        margin-top: 5px;
+                    ">
+
+                        Overall security risk based
+                        on detected events.
+
+                    </p>
+
+
+                </div>
+
+
+                <div style="
+                    font-size: 38px;
+                    font-weight: 800;
+                ">
+
+
+                    {{ data.threat_score }}
+
+
+                    <span style="
+                        font-size: 15px;
+                        color: var(--text-muted);
+                    ">
+
+                        / 100
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SCORE BAR -->
+
+            <div style="
+                margin-top: 20px;
+                height: 9px;
+                background: #34495e;
+                border-radius: 20px;
+                overflow: hidden;
+            ">
+
+
+                <div style="
+                    width: {{ data.threat_score }}%;
+                    height: 100%;
+                    background:
+                        linear-gradient(
+                            90deg,
+                            var(--primary),
+                            var(--violet)
+                        );
+                    border-radius: 20px;
+                    transition: width 1s ease;
+                ">
+                </div>
+
+
+            </div>
+
+
+
+            <div style="
+                margin-top: 10px;
+                color: var(--text-muted);
+            ">
+
+                Overall Risk:
+
+
+                <strong>
+
+                    {{ data.overall_risk }}
+
+                </strong>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- QUICK ACTIONS                                      -->
+        <!-- ================================================= -->
+
+        <div class="card"
+             style="
+                margin-top: 20px;
+                padding: 25px;
+             ">
+
+
+            <h2>
+
+                Quick Actions
+
+            </h2>
+
+
+            <p style="
+                color: var(--text-muted);
+                margin-top: 5px;
+            ">
+
+                Quickly investigate security activity.
+
+            </p>
+
+
+
+            <div style="
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-top: 18px;
+            ">
+
+
+                <a href="/alerts?risk=ALL"
+                   class="btn btn-primary">
+
+                    View All Alerts
+
+                </a>
+
+
+                <a href="/alerts?risk=CRITICAL"
+                   class="btn btn-primary">
+
+                    Critical Alerts
+
+                </a>
+
+
+                <a href="/upload"
+                   class="btn btn-primary">
+
+                    Analyze New Log
+
+                </a>
+
+
+                <a href="/ai"
+                   class="btn btn-primary">
+
+                    AI Assistant
+
+                </a>
+
+
+                <a href="/reports"
+                   class="btn btn-primary">
+
+                    Security Reports
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- RECENT SECURITY EVENTS                             -->
+        <!-- ================================================= -->
+
+        <div class="card"
+             style="
+                margin-top: 20px;
+             ">
+
+
+            <div class="table-header">
+
+
+                <div>
+
+
+                    <h2>
+
+                        Recent Security Events
+
+                    </h2>
+
+
+                    <p style="
+                        color: var(--text-muted);
+                        margin-top: 5px;
+                    ">
+
+                        Latest detected security activities.
+
+                    </p>
+
+
+                </div>
+
+
+                <a href="/alerts?risk=ALL"
+                   class="btn btn-primary">
+
+                    View All
+
+                </a>
+
+
+            </div>
+
+
+
+            {% if data.recent_events %}
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+
+                        <tr>
+
+
+                            <th>
+
+                                EVENT
+
+                            </th>
+
+
+                            <th>
+
+                                RISK
+
+                            </th>
+
+
+                            <th>
+
+                                SOURCE IP
+
+                            </th>
+
+
+                        </tr>
+
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                    {% for event in data.recent_events %}
+
+
+                    <tr>
+
+
+                        <td>
+
+
+                            <strong>
+
+                                {{ event.event }}
+
+                            </strong>
+
+
+                        </td>
+
+
+                        <td>
+
+
+                            <span class="badge badge-high">
+
+                                {{ event.risk }}
+
+                            </span>
+
+
+                        </td>
+
+
+                        <td>
+
+                            {{ event.ip }}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty-state">
+
+
+                <div class="empty-state-icon">
+
+                    ✓
+
+                </div>
+
+
+                <h3>
+
+                    No Security Events
+
+                </h3>
+
+
+                <p style="
+                    color: var(--text-muted);
+                    margin-top: 8px;
+                ">
+
+                    Upload a security log to
+                    begin analysis.
+
+                </p>
+
+
+                <a href="/upload"
+                   class="btn btn-primary"
+                   style="
+                        margin-top: 15px;
+                   ">
+
+                    Upload Security Log
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Log Analysis - AI SOC Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    {% include 'components/sidebar.html' %}
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+                Security Operations Center
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <div class="user">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <span>Analyst</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+
+        <section class="page-container fade-in">
+
+
+            <!-- HEADER -->
+
+            <div class="page-header">
+
+                <p class="text-primary">
+                    THREAT ANALYSIS
+                </p>
+
+                <h1>
+                    Security Log Analysis
+                </h1>
+
+                <p>
+                    Upload security logs and let the SOC engine
+                    identify suspicious activities and potential threats.
+                </p>
+
+            </div>
+
+
+            <!-- UPLOAD CARD -->
+
+            <div class="upload-container">
+
+                <div class="card upload-card">
+
+
+                    <div class="upload-zone">
+
+
+                        <!-- ICON -->
+
+                        <div class="upload-icon">
+                            ↑
+                        </div>
+
+
+                        <h2>
+                            Upload Security Logs
+                        </h2>
+
+
+                        <p>
+                            Select a log file from your computer
+                            to begin security analysis.
+                        </p>
+
+
+                        <!-- FORM -->
+
+                        <form
+                            action="/upload"
+                            method="POST"
+                            enctype="multipart/form-data"
+                        >
+
+                            <input
+                                type="file"
+                                name="logfile"
+                                accept=".txt,.log,.csv,.json"
+                                required
+                            >
+
+                            <br><br>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Analyze Log File
+                            </button>
+
+                        </form>
+
+
+                        <!-- SUPPORTED FORMATS -->
+
+                        <p style="
+                            margin-top: 25px;
+                            margin-bottom: 0;
+                            font-size: 12px;
+                        ">
+
+                            Supported formats:
+                            <span class="text-primary">
+                                CSV
+                            </span>
+                            ·
+                            <span class="text-primary">
+                                TXT
+                            </span>
+                            ·
+                            <span class="text-primary">
+                                JSON
+                            </span>
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- SECURITY NOTE -->
+
+                    <div style="
+                        margin-top: 20px;
+                        padding: 15px;
+                        background: rgba(54, 209, 220, 0.04);
+                        border: 1px solid var(--border);
+                        border-radius: 9px;
+                    ">
+
+                        <div style="
+                            display: flex;
+                            gap: 10px;
+                            align-items: flex-start;
+                        ">
+
+                            <span class="text-primary">
+                                ⓘ
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Security Analysis
+                                </strong>
+
+                                <p style="
+                                    color: var(--text-muted);
+                                    font-size: 12px;
+                                    margin-top: 5px;
+                                ">
+                                    Your uploaded file will be processed
+                                    by the SOC analysis engine to identify
+                                    suspicious events and security indicators.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WHAT WILL HAPPEN -->
+
+                <div style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 15px;
+                    margin-top: 20px;
+                ">
+
+
+                    <div class="card" style="padding: 20px;">
+
+                        <div class="stat-icon">
+                            1
+                        </div>
+
+                        <h3 style="margin: 15px 0 8px;">
+                            Upload
+                        </h3>
+
+                        <p style="
+                            color: var(--text-muted);
+                            font-size: 13px;
+                            line-height: 1.6;
+                        ">
+                            Select your security log file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card" style="padding: 20px;">
+
+                        <div class="stat-icon">
+                            2
+                        </div>
+
+                        <h3 style="margin: 15px 0 8px;">
+                            Analyze
+                        </h3>
+
+                        <p style="
+                            color: var(--text-muted);
+                            font-size: 13px;
+                            line-height: 1.6;
+                        ">
+                            The engine analyzes security events.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card" style="padding: 20px;">
+
+                        <div class="stat-icon">
+                            3
+                        </div>
+
+                        <h3 style="margin: 15px 0 8px;">
+                            Detect
+                        </h3>
+
+                        <p style="
+                            color: var(--text-muted);
+                            font-size: 13px;
+                            line-height: 1.6;
+                        ">
+                            Suspicious activity is identified.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

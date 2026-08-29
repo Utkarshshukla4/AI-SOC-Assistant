@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Alert Details - AI SOC Assistant
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+{% include 'components/sidebar.html' %}
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="main-content">
+
+
+    <!-- ================= TOPBAR ================= -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+
+            Security Operations Center
+
+        </div>
+
+
+        <div class="user-area">
+
+
+            <div class="notification">
+
+                ♢
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="avatar">
+
+                    A
+
+                </div>
+
+
+                <span>
+
+                    Analyst
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= PAGE ================= -->
+
+    <section class="page-container fade-in">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <p class="text-primary">
+
+                SECURITY INVESTIGATION
+
+            </p>
+
+
+            <h1>
+
+                Alert Details
+
+            </h1>
+
+
+            <p>
+
+                Detailed information about the
+                detected security event.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= ALERT HEADER ================= -->
+
+        <div class="card"
+             style="
+                padding: 25px;
+                margin-bottom: 20px;
+             ">
+
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+                flex-wrap: wrap;
+             ">
+
+
+                <div>
+
+
+                    <p class="text-primary">
+
+                        SECURITY EVENT
+
+                    </p>
+
+
+                    <h2 style="
+                        margin-top: 6px;
+                    ">
+
+                        {{ alert.event }}
+
+                    </h2>
+
+
+                </div>
+
+
+                <div>
+
+
+                    <span class="badge badge-high">
+
+                        {{ alert.risk }}
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= ALERT INFORMATION ================= -->
+
+        <div class="card"
+             style="
+                padding: 25px;
+             ">
+
+
+            <h2>
+
+                Alert Information
+
+            </h2>
+
+
+            <div style="
+                margin-top: 20px;
+                display: grid;
+                grid-template-columns:
+                    repeat(
+                        auto-fit,
+                        minmax(220px, 1fr)
+                    );
+                gap: 20px;
+            ">
+
+
+                <!-- EVENT -->
+
+                <div>
+
+                    <p style="
+                        color: var(--text-muted);
+                    ">
+
+                        Event
+
+                    </p>
+
+
+                    <h3 style="
+                        margin-top: 6px;
+                    ">
+
+                        {{ alert.event }}
+
+                    </h3>
+
+                </div>
+
+
+
+                <!-- RISK -->
+
+                <div>
+
+                    <p style="
+                        color: var(--text-muted);
+                    ">
+
+                        Risk Level
+
+                    </p>
+
+
+                    <h3 style="
+                        margin-top: 6px;
+                    ">
+
+                        {{ alert.risk }}
+
+                    </h3>
+
+                </div>
+
+
+
+                <!-- IP -->
+
+                <div>
+
+                    <p style="
+                        color: var(--text-muted);
+                    ">
+
+                        Source IP
+
+                    </p>
+
+
+                    <h3 style="
+                        margin-top: 6px;
+                    ">
+
+                        {{ alert.ip }}
+
+                    </h3>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= DESCRIPTION ================= -->
+
+        <div class="card"
+             style="
+                padding: 25px;
+                margin-top: 20px;
+             ">
+
+
+            <h2>
+
+                Event Description
+
+            </h2>
+
+
+            <div style="
+                margin-top: 15px;
+                padding: 18px;
+                border-radius: 12px;
+                background: rgba(255,255,255,0.04);
+                line-height: 1.7;
+            ">
+
+                {{ alert.description }}
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= RAW LOG ================= -->
+
+        {% if alert.log %}
+
+
+        <div class="card"
+             style="
+                padding: 25px;
+                margin-top: 20px;
+             ">
+
+
+            <h2>
+
+                Original Log Entry
+
+            </h2>
+
+
+            <div style="
+                margin-top: 15px;
+                padding: 18px;
+                border-radius: 12px;
+                background: #101820;
+                overflow-x: auto;
+                font-family: monospace;
+                line-height: 1.6;
+            ">
+
+                {{ alert.log }}
+
+            </div>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div style="
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        ">
+
+
+            <a href="/alerts"
+               class="btn btn-primary">
+
+                ← Back to Alerts
+
+            </a>
+
+
+            <a href="/dashboard"
+               class="btn btn-primary">
+
+                Dashboard
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

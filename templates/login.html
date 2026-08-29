@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - AI SOC Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* Login page */
+
+        .login-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(54, 209, 220, 0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(139, 124, 246, 0.08),
+                    transparent 30%
+                ),
+                var(--bg-main);
+        }
+
+
+        .login-container {
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            background: var(--bg-card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        /* Left side */
+
+        .login-info {
+
+            padding: 50px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(54, 209, 220, 0.08),
+                    rgba(139, 124, 246, 0.06)
+                );
+
+            border-right: 1px solid var(--border);
+        }
+
+
+        .login-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 70px;
+        }
+
+
+        .login-brand-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--violet)
+                );
+
+            font-size: 20px;
+        }
+
+
+        .login-brand-name {
+
+            font-size: 21px;
+
+            font-weight: bold;
+        }
+
+
+        .login-brand-name span {
+
+            color: var(--primary);
+        }
+
+
+        .login-info h1 {
+
+            font-size: 38px;
+
+            line-height: 1.2;
+
+            margin-bottom: 20px;
+        }
+
+
+        .login-info h1 span {
+
+            color: var(--primary);
+        }
+
+
+        .login-info > p {
+
+            color: var(--text-muted);
+
+            line-height: 1.7;
+
+            margin-bottom: 35px;
+        }
+
+
+        .security-point {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .security-point-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: rgba(54, 209, 220, 0.08);
+
+            color: var(--primary);
+        }
+
+
+        .security-point h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .security-point p {
+
+            color: var(--text-muted);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* Right side */
+
+        .login-form-section {
+
+            padding: 50px;
+        }
+
+
+        .login-form-section h2 {
+
+            font-size: 26px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .login-subtitle {
+
+            color: var(--text-muted);
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .form-group {
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .form-input {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            background: #1e3042;
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            color: var(--text-main);
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: 0.25s ease;
+        }
+
+
+        .form-input:focus {
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(54, 209, 220, 0.08);
+        }
+
+
+        .password-input {
+
+            padding-right: 55px;
+        }
+
+
+        .show-password {
+
+            position: absolute;
+
+            right: 12px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--text-muted);
+
+            cursor: pointer;
+        }
+
+
+        .show-password:hover {
+
+            color: var(--primary);
+        }
+
+
+        .login-options {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin: 5px 0 25px;
+
+            font-size: 12px;
+        }
+
+
+        .remember {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: var(--text-muted);
+        }
+
+
+        .remember input {
+
+            accent-color: var(--primary);
+        }
+
+
+        .forgot {
+
+            color: var(--primary);
+        }
+
+
+        .login-button {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    #5bd8e1
+                );
+
+            color: #07141c;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+
+        .login-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(54, 209, 220, 0.15);
+        }
+
+
+        .demo-info {
+
+            margin-top: 25px;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            background: rgba(54, 209, 220, 0.04);
+
+            border: 1px solid var(--border);
+
+            font-size: 12px;
+
+            color: var(--text-muted);
+
+            line-height: 1.6;
+        }
+
+
+        .demo-info strong {
+
+            color: var(--text-main);
+        }
+
+
+        .login-footer {
+
+            margin-top: 25px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            color: var(--text-muted);
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 750px) {
+
+            .login-container {
+
+                grid-template-columns: 1fr;
+            }
+
+            .login-info {
+
+                display: none;
+            }
+
+            .login-form-section {
+
+                padding: 35px 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-page">
+
+
+    <div class="login-container">
+
+
+        <!-- ================= LEFT SIDE ================= -->
+
+        <div class="login-info">
+
+
+            <div class="login-brand">
+
+                <div class="login-brand-icon">
+                    ◉
+                </div>
+
+                <div class="login-brand-name">
+                    AI <span>SOC</span> Assistant
+                </div>
+
+            </div>
+
+
+            <h1>
+                Secure access to your
+                <span>SOC.</span>
+            </h1>
+
+
+            <p>
+                Monitor threats, analyze security logs and
+                investigate incidents from one intelligent
+                security operations platform.
+            </p>
+
+
+            <div class="security-point">
+
+                <div class="security-point-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3>
+                        Threat Monitoring
+                    </h3>
+
+                    <p>
+                        Monitor suspicious security activity
+                        from a centralized dashboard.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-point">
+
+                <div class="security-point-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <h3>
+                        AI-Powered Analysis
+                    </h3>
+
+                    <p>
+                        Get intelligent explanations of
+                        detected security events.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-point">
+
+                <div class="security-point-icon">
+                        ⚠
+                </div>
+
+                <div>
+
+                    <h3>
+                        Incident Response
+                    </h3>
+
+                    <p>
+                        Investigate and prioritize security
+                        incidents efficiently.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= LOGIN FORM ================= -->
+
+        <div class="login-form-section">
+
+
+            <h2>
+                Welcome back
+            </h2>
+
+
+            <p class="login-subtitle">
+                Sign in to access the security operations center.
+            </p>
+
+
+            {% if error %}
+
+            <div style="
+                background: rgba(255, 100, 124, 0.08);
+                border: 1px solid rgba(255, 100, 124, 0.25);
+                color: var(--danger);
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-size: 13px;
+            ">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+            <form action="/login" method="POST">
+
+
+                <!-- Username -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        class="form-input"
+                        placeholder="Enter your username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-input password-input"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    
+
+                </div>
+
+
+                <!-- Login -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Sign In to SOC
+                </button>
+
+
+            </form>
+
+           
+
+            <!-- Demo Account -->
+
+            
+            <div class="login-footer">
+
+                AI SOC Assistant · Security Operations Platform
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Password Toggle -->
+
+<script>
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.querySelector(".show-password");
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        button.textContent = "Hide";
+
+    } else {
+
+        password.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

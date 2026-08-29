@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI SOC Assistant</title>
+
+    <!-- Common Project CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ◉
+            </div>
+
+            <div class="logo-text">
+                AI <span>SOC</span>
+            </div>
+
+        </div>
+
+
+        <nav class="nav-menu">
+
+            <a href="/" class="nav-link active">
+                <span class="nav-icon">⌂</span>
+                <span>Home</span>
+            </a>
+
+            <a href="/dashboard" class="nav-link">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/upload" class="nav-link">
+                <span class="nav-icon">↑</span>
+                <span>Log Analysis</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <span class="nav-icon">⚠</span>
+                <span>Incidents</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <span class="nav-icon">▤</span>
+                <span>Reports</span>
+            </a>
+
+            <a href="#" class="nav-link">
+                <span class="nav-icon">✦</span>
+                <span>AI Assistant</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+                Security Operations Center
+            </div>
+
+            <div class="user-area">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <div class="user">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <span>Analyst</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= HERO SECTION ================= -->
+
+        <section class="page-container fade-in">
+
+            <div class="page-header">
+
+                <p class="text-primary">
+                    AI-POWERED SECURITY PLATFORM
+                </p>
+
+                <h1>
+                    Detect. Analyze. Respond.
+                </h1>
+
+                <p>
+                    AI-powered security monitoring and incident analysis
+                    designed to help security analysts identify threats faster.
+                </p>
+
+            </div>
+
+
+            <!-- ACTION CARDS -->
+
+            <div class="content-grid">
+
+
+                <!-- MAIN ACTION -->
+
+                <div class="card" style="padding: 35px;">
+
+                    <p class="text-primary">
+                        SECURITY ANALYSIS
+                    </p>
+
+                    <h2 style="margin: 12px 0;">
+                        Analyze Your Security Logs
+                    </h2>
+
+                    <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 25px;">
+                        Upload security logs and let the system identify
+                        suspicious activities, calculate risk levels and
+                        prepare actionable security insights.
+                    </p>
+
+                    <a href="/upload" class="btn btn-primary">
+                        ↑ Upload Security Logs
+                    </a>
+
+                </div>
+
+
+                <!-- SYSTEM STATUS -->
+
+                <div class="card" style="padding: 30px;">
+
+                    <div class="table-header">
+
+                        <h2>System Status</h2>
+
+                        <span class="badge badge-low">
+                            ONLINE
+                        </span>
+
+                    </div>
+
+
+                    <div style="margin-bottom: 22px;">
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+
+                            <span style="color: var(--text-muted);">
+                                Threat Detection
+                            </span>
+
+                            <span class="text-success">
+                                Active
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 92%;"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+
+                            <span style="color: var(--text-muted);">
+                                AI Engine
+                            </span>
+
+                            <span class="text-success">
+                                Ready
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 87%;"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE SECTION -->
+
+            <div style="margin-top: 25px;">
+
+                <div class="page-header" style="margin-bottom: 18px;">
+
+                    <h2>
+                        Security Capabilities
+                    </h2>
+
+                    <p>
+                        Core features of the AI SOC platform
+                    </p>
+
+                </div>
+
+
+                <div class="stats-grid">
+
+
+                    <!-- FEATURE 1 -->
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-title">
+                                Log Analysis
+                            </span>
+
+                            <div class="stat-icon">
+                                ≋
+                            </div>
+
+                        </div>
+
+                        <div class="stat-description">
+                            Process and analyze security logs
+                            for suspicious patterns.
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEATURE 2 -->
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-title">
+                                AI Detection
+                            </span>
+
+                            <div class="stat-icon">
+                                ✦
+                            </div>
+
+                        </div>
+
+                        <div class="stat-description">
+                            Use AI to understand and explain
+                            potential security threats.
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEATURE 3 -->
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-title">
+                                Risk Assessment
+                            </span>
+
+                            <div class="stat-icon">
+                                ⚠
+                            </div>
+
+                        </div>
+
+                        <div class="stat-description">
+                            Identify threat severity and
+                            prioritize security incidents.
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEATURE 4 -->
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+
+                            <span class="stat-title">
+                                Incident Reports
+                            </span>
+
+                            <div class="stat-icon">
+                                ▤
+                            </div>
+
+                        </div>
+
+                        <div class="stat-description">
+                            Generate structured reports for
+                            security investigations.
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="card" style="padding: 25px; margin-top: 25px;">
+
+                <div class="table-header">
+
+                    <div>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                        <p style="color: var(--text-muted); margin-top: 5px;">
+                            Start working with the SOC platform
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+
+                    <a href="/dashboard" class="btn btn-primary">
+                        ▦ Open Dashboard
+                    </a>
+
+                    <a href="/upload" class="btn btn-secondary">
+                        ↑ Upload Logs
+                    </a>
+
+                    <a href="#" class="btn btn-secondary">
+                        ✦ Ask AI Assistant
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

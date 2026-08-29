@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analysis Results - AI SOC Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+{% include 'components/sidebar.html' %}
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="main-content">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+            Security Operations Center
+        </div>
+
+
+        <div class="user-area">
+
+            <div class="notification">
+                ♢
+            </div>
+
+
+            <div class="user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <span>Analyst</span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= PAGE ================= -->
+
+    <section class="page-container fade-in">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <p class="text-primary">
+                ANALYSIS COMPLETE
+            </p>
+
+
+            <h1>
+                Security Analysis Results
+            </h1>
+
+
+            <p>
+                Analysis results for:
+                <strong>{{ filename }}</strong>
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <div class="stats-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="card stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Total Alerts
+                    </span>
+
+
+                    <div class="stat-icon">
+                        !
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number">
+                    {{ analysis.total_alerts }}
+                </div>
+
+
+                <div class="stat-description">
+                    Detected security events
+                </div>
+
+            </div>
+
+
+
+            <!-- HIGH -->
+
+            <div class="card stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        High Risk
+                    </span>
+
+
+                    <div class="stat-icon">
+                        ⚠
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number text-danger">
+                    {{ analysis.high }}
+                </div>
+
+
+                <div class="stat-description">
+                    Immediate attention required
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDIUM -->
+
+            <div class="card stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Medium Risk
+                    </span>
+
+
+                    <div class="stat-icon">
+                        ◐
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number text-warning">
+                    {{ analysis.medium }}
+                </div>
+
+
+                <div class="stat-description">
+                    Investigation recommended
+                </div>
+
+            </div>
+
+
+
+            <!-- LOW -->
+
+            <div class="card stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-title">
+                        Low Risk
+                    </span>
+
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                </div>
+
+
+                <div class="stat-number text-success">
+                    {{ analysis.low }}
+                </div>
+
+
+                <div class="stat-description">
+                    Low priority events
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= SECURITY EVENTS ================= -->
+
+        <div class="card table-card">
+
+
+            <div class="table-header">
+
+                <div>
+
+                    <h2>
+                        Detected Security Events
+                    </h2>
+
+
+                    <p style="
+                        color: var(--text-muted);
+                        margin-top: 5px;
+                    ">
+                        Suspicious activities identified
+                        by the security analysis engine.
+                    </p>
+
+                </div>
+
+
+                <span class="badge badge-low">
+                    ANALYZED
+                </span>
+
+            </div>
+
+
+
+            {% if analysis.results %}
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            
+
+                            <th>EVENT</th>
+
+<th>RISK</th>
+
+<th>SOURCE IP</th>
+
+<th>LOG DETAILS</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for item in analysis.results %}
+
+
+                    <tr>
+
+
+                        <!-- EVENT -->
+
+                        <td>
+
+                            <strong>
+                                {{ item.event }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- RISK -->
+<td>
+                        {% if item.risk == "CRITICAL" %}
+
+    <span class="badge badge-high">
+        CRITICAL
+    </span>
+
+{% elif item.risk == "HIGH" %}
+
+    <span class="badge badge-high">
+        HIGH
+    </span>
+
+{% elif item.risk == "MEDIUM" %}
+
+    <span class="badge badge-medium">
+        MEDIUM
+    </span>
+
+{% else %}
+
+    <span class="badge badge-low">
+        LOW
+    </span>
+
+{% endif %}
+</td>
+
+                        <!-- LOG -->
+
+                        <td>
+    {{ item.ip }}
+</td>
+
+<td style="
+    color: var(--text-muted);
+    max-width: 600px;
+">
+
+    {{ item.description }}
+
+</td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- NO THREATS -->
+
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    ✓
+                </div>
+
+
+                <h3>
+                    No suspicious activity detected
+                </h3>
+
+
+                <p style="
+                    margin-top: 8px;
+                    color: var(--text-muted);
+                ">
+
+                    The uploaded log did not contain
+                    any recognized security threats.
+
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div style="
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        ">
+
+
+            <a href="/upload"
+               class="btn btn-primary">
+
+                ↑ Analyze Another Log
+
+            </a>
+
+
+            <a href="/dashboard"
+               class="btn btn-secondary">
+
+                ▦ Back to Dashboard
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+</body>
+
+</html>

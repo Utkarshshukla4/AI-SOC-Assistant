@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Security Alerts - AI SOC Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+{% include 'components/sidebar.html' %}
+
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+
+            Security Operations Center
+
+        </div>
+
+
+        <div class="user-area">
+
+            <div class="notification">
+                ♢
+            </div>
+
+
+            <div class="user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <span>
+                    Analyst
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PAGE
+         ===================================================== -->
+
+    <section class="page-container fade-in">
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
+
+        <div class="page-header">
+
+            <p class="text-primary">
+
+                SECURITY OPERATIONS
+
+            </p>
+
+
+            <h1>
+
+                Security Alerts
+
+            </h1>
+
+
+            <p>
+
+                Search, filter and investigate
+                detected security events.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SEARCH & FILTER
+             ================================================= -->
+
+        <div class="card"
+             style="
+                padding: 22px;
+                margin-bottom: 20px;
+             ">
+
+
+            <h3>
+
+                Search & Filter
+
+            </h3>
+
+
+            <form method="GET"
+                  action="/alerts"
+                  style="
+                    margin-top: 15px;
+                  ">
+
+
+                <div style="
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                ">
+
+
+                    <!-- SEARCH -->
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        placeholder="Search event, IP, description..."
+                        class="form-input"
+                        style="
+                            flex: 1;
+                            min-width: 250px;
+                        "
+                    >
+
+
+                    <!-- RISK -->
+
+                    <select
+                        name="risk"
+                        class="form-input"
+                        style="
+                            min-width: 160px;
+                        "
+                    >
+
+                        <option value="ALL"
+                            {% if selected_risk == "ALL" %}
+                                selected
+                            {% endif %}>
+
+                            All Risks
+
+                        </option>
+
+
+                        <option value="CRITICAL"
+                            {% if selected_risk == "CRITICAL" %}
+                                selected
+                            {% endif %}>
+
+                            Critical
+
+                        </option>
+
+
+                        <option value="HIGH"
+                            {% if selected_risk == "HIGH" %}
+                                selected
+                            {% endif %}>
+
+                            High
+
+                        </option>
+
+
+                        <option value="MEDIUM"
+                            {% if selected_risk == "MEDIUM" %}
+                                selected
+                            {% endif %}>
+
+                            Medium
+
+                        </option>
+
+
+                        <option value="LOW"
+                            {% if selected_risk == "LOW" %}
+                                selected
+                            {% endif %}>
+
+                            Low
+
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        🔎 Search
+
+                    </button>
+
+
+                    <a href="/alerts"
+                       class="btn btn-secondary">
+
+                        Reset
+
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUICK FILTERS
+             ================================================= -->
+
+        <div class="card"
+             style="
+                padding: 18px;
+                margin-bottom: 20px;
+             ">
+
+
+            <p class="text-primary">
+
+                QUICK FILTER
+
+            </p>
+
+
+            <div style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-top: 12px;
+            ">
+
+
+                <a href="/alerts?risk=ALL"
+                   class="btn btn-primary">
+
+                    All
+
+                </a>
+
+
+                <a href="/alerts?risk=CRITICAL"
+                   class="btn btn-primary">
+
+                    Critical
+
+                </a>
+
+
+                <a href="/alerts?risk=HIGH"
+                   class="btn btn-primary">
+
+                    High
+
+                </a>
+
+
+                <a href="/alerts?risk=MEDIUM"
+                   class="btn btn-primary">
+
+                    Medium
+
+                </a>
+
+
+                <a href="/alerts?risk=LOW"
+                   class="btn btn-primary">
+
+                    Low
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT SUMMARY
+             ================================================= -->
+
+        <div class="card"
+             style="
+                padding: 20px;
+                margin-bottom: 20px;
+             ">
+
+
+            <p class="text-primary">
+
+                SEARCH RESULTS
+
+            </p>
+
+
+            <h2 style="
+                margin-top: 5px;
+            ">
+
+                {{ alerts|length }} Alert(s)
+
+            </h2>
+
+
+            {% if search %}
+
+            <p style="
+                color: var(--text-muted);
+                margin-top: 7px;
+            ">
+
+                Showing results for:
+
+                <strong>
+                    "{{ search }}"
+                </strong>
+
+            </p>
+
+            {% endif %}
+
+
+            {% if selected_risk != "ALL" %}
+
+            <p style="
+                color: var(--text-muted);
+                margin-top: 5px;
+            ">
+
+                Risk filter:
+
+                <strong>
+                    {{ selected_risk }}
+                </strong>
+
+            </p>
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             ALERT TABLE
+             ================================================= -->
+
+        <div class="card">
+
+
+            {% if alerts %}
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                EVENT
+                            </th>
+
+                            <th>
+                                RISK
+                            </th>
+
+                            <th>
+                                SOURCE IP
+                            </th>
+
+                            <th>
+                                DESCRIPTION
+                            </th>
+
+                            <th>
+                                FIREWALL
+                            </th>
+
+                            <th>
+                                ACTION
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for alert in alerts %}
+
+
+                    <tr>
+
+
+                        <!-- =========================
+                             NUMBER
+                             ========================= -->
+
+                        <td>
+
+                            {{ loop.index }}
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             EVENT
+                             ========================= -->
+
+                        <td>
+
+                            <strong>
+
+                                <a
+                                    href="/alert/{{ alert.original_id }}"
+                                    style="
+                                        color: inherit;
+                                        text-decoration: none;
+                                    "
+                                >
+
+                                    {{ alert.event }}
+
+                                </a>
+
+                            </strong>
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             RISK
+                             ========================= -->
+
+                        <td>
+
+
+                            {% if alert.risk == "CRITICAL" %}
+
+                                <span
+                                    class="badge badge-high"
+                                    style="
+                                        border: 1px solid var(--danger);
+                                    "
+                                >
+
+                                    🔴 CRITICAL
+
+                                </span>
+
+
+                            {% elif alert.risk == "HIGH" %}
+
+                                <span
+                                    class="badge badge-high"
+                                >
+
+                                    🔴 HIGH
+
+                                </span>
+
+
+                            {% elif alert.risk == "MEDIUM" %}
+
+                                <span
+                                    class="badge badge-medium"
+                                >
+
+                                    🟡 MEDIUM
+
+                                </span>
+
+
+                            {% else %}
+
+                                <span
+                                    class="badge badge-low"
+                                >
+
+                                    🟢 LOW
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             SOURCE IP
+                             ========================= -->
+
+                        <td>
+
+                            <strong>
+
+                                {{ alert.ip }}
+
+                            </strong>
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             DESCRIPTION
+                             ========================= -->
+
+                        <td
+                            style="
+                                max-width: 350px;
+                                color: var(--text-muted);
+                            "
+                        >
+
+                            {{ alert.description }}
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             FIREWALL STATUS
+                             ========================= -->
+
+                        <td>
+
+
+                            {% if alert.ip
+                                  and alert.ip != "Unknown"
+                                  and alert.ip != "unknown" %}
+
+
+                                {% if is_ip_blocked(alert.ip) %}
+
+                                    <span
+                                        class="badge badge-low"
+                                    >
+
+                                        🛡 BLOCKED
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="badge badge-medium"
+                                    >
+
+                                        ⚪ ALLOWED
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            {% else %}
+
+                                <span
+                                    style="
+                                        color: var(--text-muted);
+                                    "
+                                >
+
+                                    N/A
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+
+                        <!-- =========================
+                             FIREWALL ACTION
+                             ========================= -->
+
+                        <td>
+
+
+                            {% if alert.ip
+                                  and alert.ip != "Unknown"
+                                  and alert.ip != "unknown" %}
+
+
+                                {% if is_ip_blocked(alert.ip) %}
+
+
+                                    <!-- UNBLOCK -->
+
+                                    <a
+                                        href="/unblock-ip/{{ alert.ip }}"
+                                        class="btn btn-secondary"
+                                        style="
+                                            font-size: 12px;
+                                            padding: 8px 12px;
+                                            white-space: nowrap;
+                                        "
+                                        onclick="
+                                            return confirm(
+                                                'Are you sure you want to unblock IP {{ alert.ip }}?'
+                                            );
+                                        "
+                                    >
+
+                                        🔓 Unblock
+
+                                    </a>
+
+
+                                {% else %}
+
+
+                                    <!-- BLOCK -->
+
+                                    <a
+                                        href="/block-ip/{{ alert.ip }}"
+                                        class="btn btn-primary"
+                                        style="
+                                            font-size: 12px;
+                                            padding: 8px 12px;
+                                            white-space: nowrap;
+                                        "
+                                        onclick="
+                                            return confirm(
+                                                'Are you sure you want to block IP {{ alert.ip }} using Windows Firewall?'
+                                            );
+                                        "
+                                    >
+
+                                        🛡 Block IP
+
+                                    </a>
+
+
+                                {% endif %}
+
+
+                            {% else %}
+
+                                <span
+                                    style="
+                                        color: var(--text-muted);
+                                        font-size: 12px;
+                                    "
+                                >
+
+                                    No IP
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- =================================================
+                 NO RESULTS
+                 ================================================= -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-state-icon">
+
+                    ✓
+
+                </div>
+
+
+                <h3>
+
+                    No Alerts Found
+
+                </h3>
+
+
+                <p style="
+                    color: var(--text-muted);
+                    margin-top: 8px;
+                ">
+
+                    Try changing your search
+                    or risk filter.
+
+                </p>
+
+
+                <a href="/alerts"
+                   class="btn btn-primary"
+                   style="
+                        margin-top: 15px;
+                   ">
+
+                    Clear Filters
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             INFORMATION CARD
+             ================================================= -->
+
+        <div class="card"
+             style="
+                margin-top: 20px;
+                padding: 20px;
+             ">
+
+
+            <p class="text-primary">
+
+                FIREWALL CONTROL
+
+            </p>
+
+
+            <h3 style="
+                margin-top: 5px;
+            ">
+
+                Suspicious IP Protection
+
+            </h3>
+
+
+            <p style="
+                color: var(--text-muted);
+                margin-top: 8px;
+                line-height: 1.6;
+            ">
+
+                You can block suspicious source IP addresses
+                directly from this page using Windows Defender
+                Firewall.
+
+                High and critical alerts should be investigated
+                before blocking in a real production environment.
+
+            </p>
+
+
+            <p style="
+                color: var(--warning);
+                margin-top: 10px;
+                font-size: 13px;
+            ">
+
+                ⚠ Administrator privileges may be required
+                to modify Windows Firewall rules.
+
+            </p>
+
+
+        </div>
+
+<!-- ================= FIREWALL INFORMATION ================= -->
+
+<div class="card"
+     style="
+        padding: 22px;
+        margin-top: 20px;
+        border-left: 4px solid var(--warning);
+     ">
+
+    <p class="text-warning">
+        ⚠ FIREWALL CONTROL
+    </p>
+
+    <h3 style="margin-top: 8px;">
+        Suspicious IP Blocking
+    </h3>
+
+    <p style="
+        color: var(--text-muted);
+        margin-top: 8px;
+        line-height: 1.6;
+    ">
+
+        High-risk IP addresses can be blocked using
+        Windows Defender Firewall. This operation requires
+        Administrator permission and makes a real system-level
+        firewall change.
+
+    </p>
+
+    <p style="
+        color: var(--warning);
+        margin-top: 10px;
+        font-size: 13px;
+    ">
+
+        ⚠ For demonstration purposes, verify the IP before
+        performing any firewall action.
+
+    </p>
+
+</div>
+
+        <!-- =================================================
+             NAVIGATION BUTTONS
+             ================================================= -->
+
+        <div style="
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        ">
+
+
+            <a href="/dashboard"
+               class="btn btn-primary">
+
+                ← Dashboard
+
+            </a>
+
+
+            <a href="/upload"
+               class="btn btn-primary">
+
+                Analyze New Log
+
+            </a>
+
+
+            <a href="/ai"
+               class="btn btn-secondary">
+
+                ✦ AI Assistant
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

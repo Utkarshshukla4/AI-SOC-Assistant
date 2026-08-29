@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Firewall Action - AI SOC</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+{% include 'components/sidebar.html' %}
+
+
+<main class="main-content">
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+            Security Operations Center
+        </div>
+
+        <div class="user-area">
+
+            <div class="user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <span>
+                    Analyst
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <section class="page-container fade-in">
+
+        <div class="page-header">
+
+            <p class="text-primary">
+                FIREWALL RESPONSE
+            </p>
+
+            <h1>
+                IP Blocking Result
+            </h1>
+
+            <p>
+                Windows Defender Firewall response.
+            </p>
+
+        </div>
+
+
+        <div class="card"
+             style="
+                padding: 35px;
+                max-width: 700px;
+             ">
+
+
+            {% if success %}
+
+                <div style="
+                    font-size: 50px;
+                    margin-bottom: 15px;
+                ">
+                    ✓
+                </div>
+
+                <h2 class="text-success">
+                    IP Successfully Blocked
+                </h2>
+
+            {% else %}
+
+                <div style="
+                    font-size: 50px;
+                    margin-bottom: 15px;
+                ">
+                    !
+                </div>
+
+                <h2 class="text-danger">
+                    Firewall Action Failed
+                </h2>
+
+            {% endif %}
+
+
+            <p style="
+                margin-top: 15px;
+                color: var(--text-muted);
+            ">
+                {{ message }}
+            </p>
+
+
+            <div style="
+                margin-top: 20px;
+                padding: 18px;
+                background: rgba(255,255,255,0.03);
+                border-radius: 10px;
+            ">
+
+                <strong>
+                    IP Address:
+                </strong>
+
+                {{ ip }}
+
+            </div>
+
+
+            <div style="
+                margin-top: 25px;
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            ">
+
+                <a href="/alerts"
+                   class="btn btn-primary">
+
+                    View Alerts
+
+                </a>
+
+
+                <a href="/dashboard"
+                   class="btn btn-secondary">
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

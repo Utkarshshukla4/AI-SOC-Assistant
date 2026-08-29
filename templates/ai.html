@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Security Assistant - AI SOC</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ===================================================== -->
+<!-- COMMON SIDEBAR                                        -->
+<!-- ===================================================== -->
+
+{% include 'components/sidebar.html' %}
+
+
+
+<!-- ===================================================== -->
+<!-- MAIN CONTENT                                          -->
+<!-- ===================================================== -->
+
+<main class="main-content">
+
+
+    <!-- ================================================= -->
+    <!-- TOP BAR                                            -->
+    <!-- ================================================= -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+
+            Security Operations Center
+
+        </div>
+
+
+        <div class="user-area">
+
+            <div class="notification">
+                ♢
+            </div>
+
+
+            <div class="user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <span>
+                    Analyst
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================================================= -->
+    <!-- PAGE CONTENT                                       -->
+    <!-- ================================================= -->
+
+    <section class="page-container fade-in">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <p class="text-primary">
+
+                ARTIFICIAL INTELLIGENCE
+
+            </p>
+
+
+            <h1>
+
+                AI Security Assistant
+
+            </h1>
+
+
+            <p>
+
+                Automated security recommendations
+                based on detected threats.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- AI INTRO CARD                                     -->
+        <!-- ================================================= -->
+
+        <div class="card"
+             style="
+                padding: 25px;
+                margin-bottom: 20px;
+             ">
+
+
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            ">
+
+
+                <div style="
+                    width: 55px;
+                    height: 55px;
+                    border-radius: 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 28px;
+                    background: rgba(124, 92, 255, 0.15);
+                ">
+
+                    ✦
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        Security Intelligence
+
+                    </h2>
+
+
+                    <p style="
+                        color: var(--text-muted);
+                        margin-top: 5px;
+                    ">
+
+                        The assistant analyzes detected
+                        security events and provides
+                        recommended defensive actions.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- RECOMMENDATIONS                                   -->
+        <!-- ================================================= -->
+
+        {% if recommendations %}
+
+
+            {% for item in recommendations %}
+
+
+            <div class="card"
+                 style="
+                    padding: 25px;
+                    margin-bottom: 20px;
+                 ">
+
+
+                <!-- ALERT HEADER -->
+
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 20px;
+                    flex-wrap: wrap;
+                 ">
+
+
+                    <div>
+
+                        <p class="text-primary">
+
+                            DETECTED SECURITY EVENT
+
+                        </p>
+
+
+                        <h2 style="
+                            margin-top: 5px;
+                        ">
+
+                            {{ item.event }}
+
+                        </h2>
+
+                    </div>
+
+
+                    <!-- RISK -->
+
+                    <div>
+
+                        <span class="badge badge-high">
+
+                            {{ item.risk }}
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- EVENT INFORMATION -->
+
+                <div style="
+                    margin-top: 20px;
+                    padding: 18px;
+                    border-radius: 12px;
+                    background: rgba(255,255,255,0.03);
+                ">
+
+
+                    <div style="
+                        display: grid;
+                        grid-template-columns:
+                        repeat(auto-fit, minmax(220px, 1fr));
+                        gap: 15px;
+                    ">
+
+
+                        <div>
+
+                            <p style="
+                                color: var(--text-muted);
+                                font-size: 13px;
+                            ">
+
+                                SOURCE IP
+
+                            </p>
+
+
+                            <strong>
+
+                                {{ item.ip }}
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <p style="
+                                color: var(--text-muted);
+                                font-size: 13px;
+                            ">
+
+                                RISK LEVEL
+
+                            </p>
+
+
+                            <strong>
+
+                                {{ item.risk }}
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    {% if item.description %}
+
+                    <div style="
+                        margin-top: 15px;
+                    ">
+
+                        <p style="
+                            color: var(--text-muted);
+                            font-size: 13px;
+                        ">
+
+                            DESCRIPTION
+
+                        </p>
+
+
+                        <p style="
+                            margin-top: 5px;
+                        ">
+
+                            {{ item.description }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- AI RECOMMENDATIONS -->
+
+                <div style="
+                    margin-top: 22px;
+                ">
+
+
+                    <h3>
+
+                        ✦ Recommended Actions
+
+                    </h3>
+
+
+                    <div style="
+                        margin-top: 15px;
+                    ">
+
+
+                        {% for advice in item.advice %}
+
+
+                        <div style="
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                            padding: 12px 0;
+                            border-bottom:
+                            1px solid rgba(255,255,255,0.06);
+                        ">
+
+
+                            <span style="
+                                font-size: 18px;
+                            ">
+
+                                ✓
+
+                            </span>
+
+
+                            <span>
+
+                                {{ advice }}
+
+                            </span>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+        <!-- ================================================= -->
+        <!-- NO DATA                                           -->
+        <!-- ================================================= -->
+
+        <div class="card"
+             style="
+                padding: 40px;
+                text-align: center;
+             ">
+
+
+            <div style="
+                font-size: 50px;
+                margin-bottom: 15px;
+            ">
+
+                ✦
+
+            </div>
+
+
+            <h2>
+
+                No Security Alerts Available
+
+            </h2>
+
+
+            <p style="
+                color: var(--text-muted);
+                margin-top: 10px;
+            ">
+
+                Upload a security log first.
+                The AI Security Assistant will then
+                generate recommendations based on
+                detected events.
+
+            </p>
+
+
+            <a href="/upload"
+               class="btn btn-primary"
+               style="
+                    display: inline-block;
+                    margin-top: 20px;
+               ">
+
+                Upload Security Log
+
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- ================================================= -->
+        <!-- BOTTOM ACTIONS                                    -->
+        <!-- ================================================= -->
+
+        <div style="
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        ">
+
+
+            <a href="/dashboard"
+               class="btn btn-primary">
+
+                ← Dashboard
+
+            </a>
+
+
+            <a href="/alerts"
+               class="btn btn-primary">
+
+                View Alerts
+
+            </a>
+
+
+            <a href="/reports"
+               class="btn btn-primary">
+
+                View Reports
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>
