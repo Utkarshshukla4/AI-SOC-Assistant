@@ -188,18 +188,6 @@ http://127.0.0.1:5000
 
 ---
 
-## Demo Login
-
-The project currently uses demo credentials:
-
-```text
-Username: admin
-Password: admin123
-```
-
-These credentials are only for demonstrating the project.
-
----
 
 ## Sample Log Testing
 
