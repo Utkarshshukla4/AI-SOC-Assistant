@@ -114,6 +114,7 @@ AI-SOC-Assistant/
 > `users.db` and `analysis_data.json` are local files and are excluded from GitHub using `.gitignore`.
 
 ---
+## Project Architecture
 
 <img width="1536" height="1024" alt="architecture" src="https://github.com/user-attachments/assets/aaaffbf1-84c5-4d79-aeb9-8c78b616c84b" />
 
